@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: test
+    volumes:
+      - ./sql/script.sql:/docker-entrypoint-initdb.d/script.sql
+    ports:
+      - "3306:3306"
+
+  adminer:
+    image: adminer
+    ports:
+      - "8081:8080"
