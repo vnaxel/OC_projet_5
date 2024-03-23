@@ -1,69 +1,63 @@
-import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { expect } from '@jest/globals';
+import { SessionService } from 'src/app/services/session.service';
+import { LoginComponent } from './login.component';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { SessionInformation } from 'src/app/interfaces/sessionInformation.interface';
+import { of, throwError } from 'rxjs';
+import { LoginRequest } from '../../interfaces/loginRequest.interface';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
-import { expect } from '@jest/globals';
-import { SessionService } from 'src/app/services/session.service';
-
-import { LoginComponent } from './login.component';
-import { AuthService } from '../../services/auth.service';
 
 describe('LoginComponent', () => {
     let component: LoginComponent;
     let fixture: ComponentFixture<LoginComponent>;
-
-    const mockSessionService = {
-        isLogged: false,
-        sessionInformation: {
-            admin: null,
-            id: null
-        },
-        logOut: jest.fn(() => {
-            mockSessionService.isLogged = false;
-        }),
-        logIn: jest.fn(() => {
-            mockSessionService.isLogged = true;
-        })
-    }
-
-    const mockAuthService = {
-        login: jest.fn().mockImplementation(() => {
-            return {
-                subscribe: jest.fn().mockImplementation(() => {
-                    
-                })
-            }
-        })
-    }
-
-    const mockLoginRequest = {
-        email: 'email@test.com',
-        password: 'password'
-    }
+    let authService: AuthService;
+    let fb: FormBuilder;
+    let router: Router;
+    let sessionService: SessionService;
 
     beforeEach(async () => {
+        const authServiceStub = {
+            login: jest.fn()
+        };
+        const routerStub = {
+            navigate: jest.fn()
+        };
+        const sessionServiceStub = {
+            logIn: jest.fn()
+        };
+
         await TestBed.configureTestingModule({
             declarations: [LoginComponent],
-            providers: [
-                { provide: SessionService, useValue: mockSessionService },
-                { provide: AuthService, useValue: mockAuthService }
-            ],
             imports: [
-                RouterTestingModule,
                 BrowserAnimationsModule,
-                HttpClientModule,
                 MatCardModule,
                 MatIconModule,
                 MatFormFieldModule,
                 MatInputModule,
-                ReactiveFormsModule]
-        })
-            .compileComponents();
+                ReactiveFormsModule
+            ],
+            providers: [
+                FormBuilder,
+                { provide: AuthService, useValue: authServiceStub },
+                { provide: Router, useValue: routerStub },
+                { provide: SessionService, useValue: sessionServiceStub }
+            ]
+        }).compileComponents();
+
+        authService = TestBed.inject(AuthService);
+        fb = TestBed.inject(FormBuilder);
+        router = TestBed.inject(Router);
+        sessionService = TestBed.inject(SessionService);
+    });
+
+    beforeEach(() => {
         fixture = TestBed.createComponent(LoginComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
@@ -73,14 +67,31 @@ describe('LoginComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should have a form', () => {
-        expect(component.form).toBeTruthy();
+    it('should submit login form and redirect on successful login', () => {
+        const loginRequest: LoginRequest = { email: 'test@example.com', password: 'password' };
+        const sessionInfo: SessionInformation = {
+            token: 'token',
+            type: 'id_token',
+            id: 1,
+            username: 'jdoe',
+            firstName: 'john',
+            lastName: 'doe',
+            admin: true
+        };
+
+        (authService.login as any).mockReturnValue(of(sessionInfo));
+
+        component.form.patchValue(loginRequest);
+        component.submit();
+
+        expect(authService.login).toHaveBeenCalledWith(loginRequest);
+        expect(sessionService.logIn).toHaveBeenCalledWith(sessionInfo);
+        expect(router.navigate).toHaveBeenCalledWith(['/sessions']);
     });
 
-    it('should log in', () => {
-        component.form.setValue(mockLoginRequest);
+    it('should handle error on login', () => {
+        (authService.login as any).mockReturnValue(throwError('Login failed'));
         component.submit();
-        expect(mockAuthService.login).toHaveBeenCalledWith(mockLoginRequest);
-        expect(mockSessionService.logIn).toHaveBeenCalled();
+        expect(component.onError).toBe(true);
     });
 });
