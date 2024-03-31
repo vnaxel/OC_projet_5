@@ -1,12 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar'; // Add this line
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // Add this line
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { FormComponent } from './form.component';
 import { SessionApiService } from '../../services/session-api.service';
 import { SessionService } from '../../../../services/session.service';
 import { TeacherService } from '../../../../services/teacher.service';
+import { FixNavigationTriggeredOutsideAngularZoneNgModule } from 'src/app/fix_navigation_tests/fix-navigation';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 describe('FormComponent', () => {
     let component: FormComponent;
@@ -53,7 +61,18 @@ describe('FormComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [ReactiveFormsModule],
+            imports: [
+                FixNavigationTriggeredOutsideAngularZoneNgModule,
+                NoopAnimationsModule,
+                HttpClientModule,
+                MatCardModule,
+                MatIconModule,
+                MatFormFieldModule,
+                MatInputModule,
+                ReactiveFormsModule,
+                MatSnackBarModule,
+                MatSelectModule
+            ],
             declarations: [FormComponent],
             providers: [
                 { provide: ActivatedRoute, useValue: mockActivatedRoute },
