@@ -37,10 +37,16 @@ ALTER TABLE `PARTICIPATE` ADD FOREIGN KEY (`user_id`) REFERENCES `USERS` (`id`);
 ALTER TABLE `PARTICIPATE` ADD FOREIGN KEY (`session_id`) REFERENCES `SESSIONS` (`id`);
 
 INSERT INTO TEACHERS (first_name, last_name)
-VALUES ('Margot', 'DELAHAYE'),
-       ('Hélène', 'THIERCELIN');
+VALUES  ('Margot', 'DELAHAYE'),
+        ('Helene', 'THIERCELIN');
 
 
 INSERT INTO USERS (first_name, last_name, admin, email, password)
-VALUES ('Admin', 'Admin', true, 'yoga@studio.com', '$2a$10$.Hsa/ZjUVaHqi0tp9xieMeewrnZxrZ5pQRzddUXE/WjDu2ZThe6Iq'); 
+VALUES  ('Admin', 'Admin', true, 'yoga@studio.com', '$2a$10$.Hsa/ZjUVaHqi0tp9xieMeewrnZxrZ5pQRzddUXE/WjDu2ZThe6Iq'),
+        ('User', 'User', false, 'test@test.com', '$2a$10$.Hsa/ZjUVaHqi0tp9xieMeewrnZxrZ5pQRzddUXE/WjDu2ZThe6Iq');
+
+INSERT INTO SESSIONS (name, description, date, teacher_id)
+VALUES  ('Yoga', 'Cours de yoga', '2021-06-01 10:00:00', 1),
+        ('Pilates', 'Cours de pilates', '2021-06-01 11:00:00', 2);
+
 
