@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FixNavigationTriggeredOutsideAngularZoneNgModule } from 'src/app/fix_navigation_tests/fix-navigation';
 
 describe('LoginComponent', () => {
     let component: LoginComponent;
@@ -36,6 +37,7 @@ describe('LoginComponent', () => {
         await TestBed.configureTestingModule({
             declarations: [LoginComponent],
             imports: [
+                FixNavigationTriggeredOutsideAngularZoneNgModule,
                 BrowserAnimationsModule,
                 MatCardModule,
                 MatIconModule,

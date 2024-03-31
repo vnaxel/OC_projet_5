@@ -9,7 +9,8 @@ import { SessionService } from 'src/app/services/session.service';
 import { expect } from '@jest/globals';
 import { MeComponent } from './me.component';
 import { UserService } from 'src/app/services/user.service';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FixNavigationTriggeredOutsideAngularZoneNgModule } from 'src/app/fix_navigation_tests/fix-navigation';
 
 describe('MeComponent', () => {
     let component: MeComponent;
@@ -48,6 +49,7 @@ describe('MeComponent', () => {
         await TestBed.configureTestingModule({
             declarations: [MeComponent],
             imports: [
+                FixNavigationTriggeredOutsideAngularZoneNgModule,
                 NoopAnimationsModule,
                 MatSnackBarModule,
                 HttpClientModule,

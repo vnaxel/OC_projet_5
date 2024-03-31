@@ -11,9 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { DetailComponent } from './detail.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
 import { of } from 'rxjs';
-
+import { ListComponent } from '../list/list.component';
+import { FixNavigationTriggeredOutsideAngularZoneNgModule } from 'src/app/fix_navigation_tests/fix-navigation';
 
 describe('DetailComponent', () => {
     let component: DetailComponent;
@@ -67,6 +67,7 @@ describe('DetailComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [
+                FixNavigationTriggeredOutsideAngularZoneNgModule,
                 NoopAnimationsModule,
                 RouterTestingModule,
                 HttpClientModule,
@@ -75,7 +76,7 @@ describe('DetailComponent', () => {
                 MatIconModule,
                 MatButtonModule,
                 ReactiveFormsModule,
-                RouterTestingModule.withRoutes([{ path: 'sessions', component: DetailComponent }])
+                RouterTestingModule.withRoutes([{ path: 'sessions', component: ListComponent }])
             ],
             declarations: [DetailComponent],
             providers: [{ provide: SessionService, useValue: mockSessionService }, { provide: SessionApiService, useValue: MockSessionApiService }],

@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { expect } from '@jest/globals';
-
 import { AppComponent } from './app.component';
+import { FixNavigationTriggeredOutsideAngularZoneNgModule } from './fix_navigation_tests/fix-navigation';
 
 
 describe('AppComponent', () => {
@@ -14,6 +14,7 @@ describe('AppComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [
+                FixNavigationTriggeredOutsideAngularZoneNgModule,
                 RouterTestingModule,
                 HttpClientModule,
                 MatToolbarModule
