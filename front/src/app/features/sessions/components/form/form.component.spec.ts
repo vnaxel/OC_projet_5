@@ -83,32 +83,32 @@ describe('FormComponent', () => {
     });
 
     it('should initialize form for update', () => {
+        const mockSession = { id: 1, name: 'Session 1', date: new Date('2021-12-12'), teacher_id: 1, description: 'Description', users: [] };
+        jest.spyOn(mockSessionApiService, 'detail').mockReturnValue(of(mockSession));
         mockActivatedRoute.snapshot.paramMap.get.mockReturnValue('1');
         mockRouter.url = '/sessions/update/1';
         component.ngOnInit();
         expect(component.onUpdate).toBe(true);
         expect(mockSessionApiService.detail).toHaveBeenCalledWith('1');
+        expect(component.sessionForm?.value).toEqual({ name: 'Session 1', description: 'Description', date: '2021-12-12', teacher_id: 1 });
     });
 
     it('should initialize form for create', () => {
         component.ngOnInit();
+        expect(component.sessionForm).toBeDefined();
+        expect(component.sessionForm?.value).toEqual({ name: '', description: '', date: '', teacher_id: '' });
         expect(component.onUpdate).toBe(false);
         expect(mockSessionApiService.detail).not.toHaveBeenCalled();
     });
 
-    it('should create session', () => {
-        component.sessionForm?.controls['name'].setValue('Test Session');
-        component.sessionForm?.controls['date'].setValue('2022-01-01');
-        component.sessionForm?.controls['teacher_id'].setValue('1');
-        component.sessionForm?.controls['description'].setValue('Test Description');
+    it('should submit form and create session', () => {
+        const mockSession = { name: 'Session 1', date: '2021-12-12', teacher_id: 1, description: 'Description' };
+        component.ngOnInit();
+        component.sessionForm?.patchValue(mockSession);
+        const spy = jest.spyOn(mockSessionApiService, 'create');
         component.submit();
-        expect(mockSessionApiService.create).toHaveBeenCalledWith({
-            name: 'Test Session',
-            date: '2022-01-01',
-            teacher_id: '1',
-            description: 'Test Description'
-        });
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['sessions']);
+        expect(spy).toHaveBeenCalledWith(mockSession);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['sessions'])
     });
 
     it('should submit form and update session', () => {
@@ -128,5 +128,6 @@ describe('FormComponent', () => {
         expect(mockMatSnackBar.open).toHaveBeenCalledWith('Test Message', 'Close', { duration: 3000 });
         expect(mockRouter.navigate).toHaveBeenCalledWith(['sessions']);
     });
+
 
 });
