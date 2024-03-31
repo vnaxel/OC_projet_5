@@ -22,7 +22,6 @@ describe('FormComponent', () => {
     let fixture: ComponentFixture<FormComponent>;
     let sessionApiService: SessionApiService;
     let router: Router;
-    let route: ActivatedRoute;
 
     const mockSessionService = {
         sessionInformation: {
@@ -66,7 +65,6 @@ describe('FormComponent', () => {
 
         fixture = TestBed.createComponent(FormComponent);
         router = TestBed.inject(Router);
-        route = TestBed.inject(ActivatedRoute);
         sessionApiService = TestBed.inject(SessionApiService);
         component = fixture.componentInstance;
         fixture.detectChanges();
