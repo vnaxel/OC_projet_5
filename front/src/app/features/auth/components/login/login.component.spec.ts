@@ -22,17 +22,17 @@ describe('LoginComponent', () => {
     let router: Router;
     let sessionService: SessionService;
 
+    const mockAuthService = {
+        login: jest.fn()
+    };
+    const mockRouter = {
+        navigate: jest.fn()
+    };
+    const mockSessionService = {
+        logIn: jest.fn()
+    };
+    
     beforeEach(async () => {
-        const authServiceStub = {
-            login: jest.fn()
-        };
-        const routerStub = {
-            navigate: jest.fn()
-        };
-        const sessionServiceStub = {
-            logIn: jest.fn()
-        };
-
         await TestBed.configureTestingModule({
             declarations: [LoginComponent],
             imports: [
@@ -45,9 +45,9 @@ describe('LoginComponent', () => {
             ],
             providers: [
                 FormBuilder,
-                { provide: AuthService, useValue: authServiceStub },
-                { provide: Router, useValue: routerStub },
-                { provide: SessionService, useValue: sessionServiceStub }
+                { provide: AuthService, useValue: mockAuthService },
+                { provide: Router, useValue: mockRouter },
+                { provide: SessionService, useValue: mockSessionService }
             ]
         }).compileComponents();
 
