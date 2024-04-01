@@ -48,5 +48,3 @@ VALUES  ('Admin', 'Admin', true, 'yoga@studio.com', '$2a$10$.Hsa/ZjUVaHqi0tp9xie
 INSERT INTO SESSIONS (name, description, date, teacher_id)
 VALUES  ('Yoga', 'Cours de yoga', '2021-06-01 10:00:00', 1),
         ('Pilates', 'Cours de pilates', '2021-06-01 11:00:00', 2);
-
-
