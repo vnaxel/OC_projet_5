@@ -1,0 +1,7 @@
+{
+    "id": 1,
+    "firstName": "Adminer",
+    "lastName": "Admin",
+    "email": "admin@admin.com",
+    "isAdmin": true
+}

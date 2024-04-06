@@ -8,8 +8,7 @@ describe('Login spec', () => {
     })
 
     it('Logout', () => {
-        cy.login('yoga@studio.com', 'test!1234')
-        cy.url().should('include', '/sessions')
+        cy.loginAsUser()
         cy.get('span').contains('Logout').click()
         cy.url().should('eq', 'http://localhost:4200/')
     })
@@ -22,10 +21,7 @@ describe('Login spec', () => {
     })
     
     it('Login successfull', () => {
-        cy.visit('/login')
-        cy.get('input[formControlName=email]').type("yoga@studio.com")
-        cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
-        cy.url().should('include', '/sessions')
+        cy.loginAsAdmin()
     })
 
 })

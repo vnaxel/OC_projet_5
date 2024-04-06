@@ -17,29 +17,37 @@ describe('Register spec', () => {
         })
         
         it('Register successfull', () => {
+            cy.intercept('POST', '/api/auth/register', {
+                body: {
+                    id: 1,
+                    username: 'userName',
+                    firstName: 'firstName',
+                    lastName: 'lastName',
+                    admin: true
+                },
+            })
             cy.visit('/register')
             cy.get('input[formControlName=firstName]').type("John")
             cy.get('input[formControlName=lastName]').type("Doe")
             cy.get('input[formControlName=email]').type("userTest@email.com")
-            cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}`)
+            cy.get('input[formControlName=password]').type(`"test!1234{enter}`)
             cy.url().should('include', '/login')
-            cy.get('input[formControlName=email]').type("userTest@email.com")
-            cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
-            cy.url().should('include', '/sessions')
         })
 
         it('show the user information', () => {
-            cy.login('userTest@email.com', 'test!1234')
-            cy.url().should('include', '/sessions')
+            cy.loginAsAdmin()
+            cy.intercept('GET', '/api/user/1', { fixture: 'user.json' })
             cy.get('span').contains('Account').click()
             cy.url().should('include', '/me')
             cy.get('p').first().should('contain', 'Name: John DOE')
-            cy.get('p').eq(1).should('contain', 'Email: userTest@email.com')
+            cy.get('p').eq(1).should('contain', 'Email: john@doe.com')
         })
 
         it('Delete Account just created', () => {
-            cy.login('userTest@email.com', 'test!1234')
-            cy.url().should('include', '/sessions')
+            cy.intercept('DELETE', '/api/user/1', {
+                statusCode: 200
+            })
+            cy.url().should('include', '/me')
             cy.get('span').contains('Account').click()
             cy.get('button').contains('Detail').click() //Delete the account (the button got weird content, but it's the delete button)
             cy.url().should('eq', 'http://localhost:4200/')

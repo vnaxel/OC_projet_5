@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "title": "Session 1",
+        "date": "2016-01-01",
+        "teacher_id": 1,
+        "description": "This is the first session",
+        "users": []
+    },
+    {
+        "id": 2,
+        "title": "Session 2",
+        "date": "2016-01-02",
+        "teacher_id": 2,
+        "description": "This is the second session",
+        "users": []
+    }
+]

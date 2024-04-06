@@ -67,7 +67,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+			<version>1.18.30</version>
+			<optional>true</optional>
         </dependency>
 
 		<dependency>
@@ -167,7 +168,11 @@
                     <target>9</target>
                 </configuration>
             </plugin>
-        </plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>

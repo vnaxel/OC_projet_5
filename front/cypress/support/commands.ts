@@ -29,13 +29,40 @@ export { };
 declare global {
     namespace Cypress {
         interface Chainable {
-            login(email: string, password: string): Chainable<void>
+            loginAsAdmin(): Chainable<void>
+            loginAsUser(): Chainable<void>
         }
     }
 }
 
-Cypress.Commands.add('login', (email: string, password: string) => {
+Cypress.Commands.add('loginAsAdmin', () => {
     cy.visit('/login')
-    cy.get('input[formControlName=email]').type(email)
-    cy.get('input[formControlName=password]').type(`${password}{enter}{enter}`)
-});
+    cy.intercept('POST', '/api/auth/login', {
+        body: {
+            id: 1,
+            username: 'admin',
+            firstName: 'admin',
+            lastName: 'admin',
+            admin: true
+        },
+    })
+    cy.get('input[formControlName=email]').type("admin")
+    cy.get('input[formControlName=password]').type(`admin{enter}{enter}`)
+    cy.url().should('include', '/sessions')
+})
+
+Cypress.Commands.add('loginAsUser', () => {
+    cy.visit('/login')
+    cy.intercept('POST', '/api/auth/login', {
+        body: {
+            id: 1,
+            username: 'user',
+            firstName: 'user',
+            lastName: 'user',
+            admin: false
+        },
+    })
+    cy.get('input[formControlName=email]').type("user")
+    cy.get('input[formControlName=password]').type(`user{enter}{enter}`)
+    cy.url().should('include', '/sessions')
+})
