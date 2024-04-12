@@ -17,8 +17,10 @@ Depuis le repertoire `back` executer `mvn clean test`
 
 Depuis le repertoire `front` executer `npm i` pour installer les dépendances du projet
 
+puis `npm run start` pour lancer le frontend
+
 pour executer les tests frontend avec couverture executer `npm run test:coverage`
 
-pour executer les tests end to end executer `npx cypress run`
+pour executer les tests end to end executer `npm run cypress:run`
 puis pour consulter la couverture des tests end to end executer `npm run e2e:coverage` 
 
