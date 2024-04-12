@@ -42,4 +42,31 @@ class UserTest {
         assertNotNull(savedUser.getUpdatedAt());
         assertEquals(savedUser.toString(), userRepository.findById(savedUser.getId()).get().toString());
     }
+
+    @Test
+    void testUserEqualsMethod() {
+        User user1 = User.builder()
+                .id(1L)
+                .email("test@example.com")
+                .lastName("Doe")
+                .firstName("John")
+                .password("password")
+                .admin(true)
+                .createdAt(null)
+                .updatedAt(null)
+                .build();
+
+        User user2 = User.builder()
+                .id(1L)
+                .email("test@example.com")
+                .lastName("Doe")
+                .firstName("John")
+                .password("password")
+                .admin(true)
+                .createdAt(null)
+                .updatedAt(null)
+                .build();
+
+        assertTrue(user1.equals(user2));
+    }
 }
